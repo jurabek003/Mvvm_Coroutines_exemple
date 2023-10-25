@@ -12,4 +12,7 @@ object ApiClinet {
             .build()
     }
 
+    fun getApiService():ApiService{
+        return getRetrofit().create(ApiService::class.java)
+    }
 }

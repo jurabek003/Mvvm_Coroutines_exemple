@@ -14,4 +14,5 @@ data class Get_AllClients(
     val tel: String,
     @SerializedName("umumiy_summa")
     val umumiySumma: Int
+
 )

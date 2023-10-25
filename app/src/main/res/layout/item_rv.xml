@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
+
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/item_name"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="ismi"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:fontFamily="serif"
+                android:layout_margin="5dp"
+                android:textColor="#FF0000"
+                />
+            <TextView
+                android:id="@+id/item_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="date"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:fontFamily="serif"
+                android:layout_margin="5dp"
+                android:textColor="#D50000"/>
+            <TextView
+                android:id="@+id/item_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_name"
+                android:text="puli"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:fontFamily="serif"
+
+                android:layout_margin="5dp"
+                android:textColor="#D50000"/>
+
+            <TextView
+                android:id="@+id/item_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:fontFamily="serif"
+                android:text="manzil"
+                android:textColor="#D50000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/item_date" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+</LinearLayout>
