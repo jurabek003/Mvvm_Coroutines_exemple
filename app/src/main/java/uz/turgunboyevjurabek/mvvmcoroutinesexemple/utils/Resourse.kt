@@ -11,6 +11,6 @@ data class Resourse<out T>(val status: Status,val date:T?,val massage:String?){
         fun <T>loading(massage: String?):Resourse<T>{
             return Resourse(Status.LOADING,null,null)
         }
-        
+
     }
 }
