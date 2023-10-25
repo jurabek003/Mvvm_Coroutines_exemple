@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import uz.turgunboyevjurabek.mvvmcoroutinesexemple.adapter.RvAdapter
 import uz.turgunboyevjurabek.mvvmcoroutinesexemple.databinding.ActivityMainBinding
+import uz.turgunboyevjurabek.mvvmcoroutinesexemple.db.DataBase
+import uz.turgunboyevjurabek.mvvmcoroutinesexemple.madels.Get_AllClients
 import uz.turgunboyevjurabek.mvvmcoroutinesexemple.network.ApiClinet
 import uz.turgunboyevjurabek.mvvmcoroutinesexemple.repozitory.Repozitory
 import uz.turgunboyevjurabek.mvvmcoroutinesexemple.utils.Status
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ViewModel
     lateinit var repozitory: Repozitory
     lateinit var rvAdapter: RvAdapter
+    lateinit var dataBase: DataBase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -50,6 +53,18 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Uraaa 😉👨‍💻", Toast.LENGTH_SHORT).show()
                     rvAdapter= RvAdapter(it.date!!)
                     binding.rvAdapter.adapter=rvAdapter
+
+                    dataBase= DataBase.newInstens(this)
+                    if (dataBase.abstrakDao().getAll().isEmpty()){
+                        for (i in 0 until it.date.size){
+                            if (it.date[i].clientRasm ==null){
+                                it.date[i].clientRasm= R.drawable.ic_launcher_foreground.toString()
+                            }
+                        }
+
+                        dataBase.abstrakDao().addList(it.date as ArrayList<Get_AllClients>)
+                        Toast.makeText(this, "Qushildi", Toast.LENGTH_SHORT).show()
+                    }
 
                 }
             }
