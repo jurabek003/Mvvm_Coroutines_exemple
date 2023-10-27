@@ -2,6 +2,7 @@ package uz.turgunboyevjurabek.mvvmcoroutinesexemple
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
@@ -10,6 +11,7 @@ import uz.turgunboyevjurabek.mvvmcoroutinesexemple.databinding.ActivityMainBindi
 import uz.turgunboyevjurabek.mvvmcoroutinesexemple.db.DataBase
 import uz.turgunboyevjurabek.mvvmcoroutinesexemple.madels.Get_AllClients
 import uz.turgunboyevjurabek.mvvmcoroutinesexemple.network.ApiClinet
+import uz.turgunboyevjurabek.mvvmcoroutinesexemple.network.NetworkYesOrNot
 import uz.turgunboyevjurabek.mvvmcoroutinesexemple.repozitory.Repozitory
 import uz.turgunboyevjurabek.mvvmcoroutinesexemple.utils.Status
 import uz.turgunboyevjurabek.mvvmcoroutinesexemple.vm.ViewMadelFactory
@@ -21,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var repozitory: Repozitory
     lateinit var rvAdapter: RvAdapter
     lateinit var dataBase: DataBase
+    lateinit var networkYesOrNot: NetworkYesOrNot
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -47,23 +50,40 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "loading", Toast.LENGTH_SHORT).show()
                 }
                 Status.ERROR->{
+
                     Toast.makeText(this, "error 🤢${it.massage}", Toast.LENGTH_SHORT).show()
+                    networkYesOrNot=NetworkYesOrNot()
+                    if (!networkYesOrNot.isNetworkAvailable(this)){
+                        dataBase= DataBase.newInstens(this)
+                        if (dataBase.abstrakDao().getAll().isEmpty()){
+                            binding.thtOps.visibility=View.VISIBLE
+                        }
+                        rvAdapter= RvAdapter(dataBase.abstrakDao().getAll() as ArrayList<Get_AllClients>)
+                        binding.rvAdapter.adapter=rvAdapter
+                        rvAdapter.notifyDataSetChanged()
+                    }
+
                 }
                 Status.SUCCESSFUL->{
+
                     Toast.makeText(this, "Uraaa 😉👨‍💻", Toast.LENGTH_SHORT).show()
                     rvAdapter= RvAdapter(it.date!!)
-                    binding.rvAdapter.adapter=rvAdapter
-
                     dataBase= DataBase.newInstens(this)
-                    if (dataBase.abstrakDao().getAll().isEmpty()){
-                        for (i in 0 until it.date.size){
-                            if (it.date[i].clientRasm ==null){
-                                it.date[i].clientRasm= R.drawable.ic_launcher_foreground.toString()
-                            }
-                        }
+                    networkYesOrNot=NetworkYesOrNot()
 
-                        dataBase.abstrakDao().addList(it.date as ArrayList<Get_AllClients>)
-                        Toast.makeText(this, "Qushildi", Toast.LENGTH_SHORT).show()
+                    if (networkYesOrNot.isNetworkAvailable(this)){
+                        binding.rvAdapter.adapter=rvAdapter
+
+                        // DataBaseni tekshirish bo'shmi yoki bo'sh emasligini
+                        if (dataBase.abstrakDao().getAll().isEmpty()){
+                            for (i in 0 until it.date.size){
+                                if (it.date[i].clientRasm ==null){
+                                    it.date[i].clientRasm= R.drawable.ic_launcher_foreground.toString()
+                                }
+                            }
+                            dataBase.abstrakDao().addList(it.date as ArrayList<Get_AllClients>)
+                            Toast.makeText(this, "Qushildi", Toast.LENGTH_SHORT).show()
+                        }
                     }
 
                 }
